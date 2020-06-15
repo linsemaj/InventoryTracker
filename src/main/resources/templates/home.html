@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://thymeleaf.org">
+	<head>
+		<title>Home</title>
+	</head>
+	<style>
+		#location, #welcome, #signup{color:blue; display:inline;
+		}
+	</style>
+	<body>
+		<div id=header>
+				<h3 id=location th:href>Home</h3>
+				<a id=signup th:href="@{/signup}">Sign up/Login</a>
+				<h3 id=welcome th:text="|Welcome, User|"></h3>
+		</div>
+		
+		<div id=box-with-low-items>
+			<h2>low items text box</h2>
+		</div>
+
+		<div id=store-section>
+			<a th:href="@{/store}">if storedstores > 0, show stores</a><br/>
+			<a th:href="@{/}">+Add a new Store!</a>
+		</div>
+	</body>
+</html>
