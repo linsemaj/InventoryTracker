@@ -10,7 +10,7 @@
 	<body>
 		<div id=header>
 				<h3 id=location th:href>Home</h3>
-				<a id=signup th:href="@{/signup}">Sign up/Login</a>
+				<a id=signup th:href="@{/user/signIn}">Sign up/Login</a>
 				<h3 id=welcome th:text="|Welcome, User|"></h3>
 		</div>
 		
@@ -19,8 +19,9 @@
 		</div>
 
 		<div id=store-section>
-			<a th:href="@{/store}">if storedstores > 0, show stores</a><br/>
+			<a th:href="@{/user/store}">if storedstores > 0, show stores</a><br/>
 			<a th:href="@{/}">+Add a new Store!</a>
 		</div>
+			<a th:href="@{/}">logout</a>
 	</body>
 </html>
