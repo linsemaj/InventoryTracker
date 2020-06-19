@@ -1,12 +1,11 @@
 package com.example.InventoryTracker.web;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.InventoryTracker.Domain.User;
@@ -45,10 +44,11 @@ public class UserController {
 		return "store";
 	}
 	@ResponseBody
-	@GetMapping("/veifyUser")
-	public User verifyUser(User user){
-		
-		return userService.verifyUser(user);
+	@GetMapping("/checkDuplicationUsernameAndEmail")
+	public User verifyUser(@RequestBody User user){
+		userService.checkEmail(user.getEmail());
+		userService.checkUsername(user.getUsername());
+		return null;
 	}
 	@PostMapping("/signup")
 	public String signedUp(User user){

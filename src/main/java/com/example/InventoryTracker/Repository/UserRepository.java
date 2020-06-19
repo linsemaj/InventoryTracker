@@ -1,5 +1,6 @@
 package com.example.InventoryTracker.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query("select u from User u where username= :username and password= :password ")
 	Set<User> findUserWithUsernameAndPassword(String username, String password);
+	
+	@Query("select u from User u where username= :username")
+	List<User> checkUsername(String username);
+
+	@Query("select u from User u where email= :email")
+	List<User> checkEmail(String email);
 	
 	
 }

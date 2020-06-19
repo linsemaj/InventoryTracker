@@ -4,29 +4,28 @@
 		<title>Sign Up/Log In</title>
 	</head>
 	<style>
-	
+	span{ display:inline-block; background-color
+	}
 	</style>
 	
 	<body>
-		<form action="/signup" method="post">
-			<div id= signup-container>
+			<div id= signupContainer>
 				<div>
 					<h1>Sign Up</h1>
-					Username: <input type="text" th:field=|${user.username}|/><br/>
-					Password: <input type="password" th:field="|${user.password}|"/><br/>
-					Confirm Password: <input type="text" /><br/>
-					Email: <input type="text" th:field="|${user.email}|"/><br/>
-					<button th:action="submit">Create Account</button>
+					Username: <input class=signupInput id=signupUsername type="text" th:field=|${user.username}|/><br/>
+					Password: <input class=signupInput id=signupPassword type="password" th:field="|${user.password}|"/><br/>
+					Confirm Password: <input class=signupInput id=confirmPassword type="password" /><br/>
+					Email: <input class=signupInput id=email type="text" th:field="|${user.email}|"/><br/>
+					<button id= createAccountBtn >Create Account</button><div id=signupAppendToBtn> </div>
 			
 				</div>
 			</div>
-		</form>
-		<form action="/login" method="post">
+		<form>
 			<div id= login-container>
 				<h1>Login</h1>
-				Username: <input type="text" th:field="|${user.username}|"/><br/>
-				Password: <input type="password" th:field="|${user.password}|"/><br/>
-				<button th:action="submit">Login</button>
+				Username: <input id= login-username type="text" th:field="|${user.username}|"/><br/>
+				Password: <input id= login-password type="password" th:field="|${user.password}|"/><br/>
+				<button id=login-btn >Login</button>
 			</div><br/>
 		</form>
 	</body>

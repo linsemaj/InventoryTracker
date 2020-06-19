@@ -1,5 +1,6 @@
 package com.example.InventoryTracker.Service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,18 @@ public class UserService {
 	public User addUser(User user) {
 
 		return userRepo.save(user);
+	}
+
+	public Boolean checkEmail(String email) {
+		List<User> usersWithEmail = userRepo.checkEmail(email);
+		return usersWithEmail.isEmpty();
+		
+	}
+
+	public Boolean checkUsername(String username) {
+		List<User> usersWithUsername = userRepo.checkUsername(username);
+		return usersWithUsername.isEmpty();
+		
 	}
 	
 	
