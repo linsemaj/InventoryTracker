@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,11 +28,15 @@ public class UserController {
 		
 		return "redirect:/user/signIn";
 	}
-	
-	@GetMapping("/user/home")
-	public String userHome(){
-		
+	@GetMapping("/user/{userId}/home")
+	public String userHome(@PathVariable long userId, User user){
 		return "home";
+	}
+	@PostMapping("/user/home")
+	public String usertestHome(User user){
+		user = userService.checkLoginInputs(user);
+		if(user==null) return "redirect:/user/signup";
+		return "redirect:/user/"+user.getId()+"/home";
 	}
 	@GetMapping("/user/signIn")
 	public String signUp(ModelMap model){
@@ -42,19 +47,26 @@ public class UserController {
 	public String store(){
 		
 		return "store";
+	}	
+	
+	@ResponseBody
+	@PostMapping("/user/signup")
+	public Long verifyAndSignup(@RequestBody User user){
+		 User userWithEmail=userService.checkEmail(user);
+		 User userWithName=userService.checkUsername(user);
+		 if(userWithEmail!= null) return null;
+		 if(userWithName!= null) return null;
+		userService.save(user);
+		return user.getId();
 	}
 	@ResponseBody
-	@GetMapping("/checkDuplicationUsernameAndEmail")
-	public User verifyUser(@RequestBody User user){
-		userService.checkEmail(user.getEmail());
-		userService.checkUsername(user.getUsername());
-		return null;
+	@PostMapping("/user/login")
+	public Boolean verifyAndLogin(@RequestBody User user){
+		User foundUser=userService.checkLoginInputs(user);
+		if(!(foundUser==null)) return true;
+		return false;
 	}
-	@PostMapping("/signup")
-	public String signedUp(User user){
-		userService.addUser(user);
-		return "redirect:/user/home";
-	}
+
 	@PostMapping("/login")
 	public String login(User user){
 		user =userService.verifyUser(user);

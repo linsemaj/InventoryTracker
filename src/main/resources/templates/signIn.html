@@ -9,25 +9,24 @@
 	</style>
 	
 	<body>
-			<div id= signupContainer>
-				<div>
+		<div id= signupContainer>
+			<form id=signupForm onsubmit='return allowUserSignup(event.preventDefault())' method="POST"  th:action="@{/user/home}">
 					<h1>Sign Up</h1>
 					Username: <input class=signupInput id=signupUsername type="text" th:field=|${user.username}|/><br/>
 					Password: <input class=signupInput id=signupPassword type="password" th:field="|${user.password}|"/><br/>
 					Confirm Password: <input class=signupInput id=confirmPassword type="password" /><br/>
 					Email: <input class=signupInput id=email type="text" th:field="|${user.email}|"/><br/>
-					<button id= createAccountBtn >Create Account</button><div id=signupAppendToBtn> </div>
-			
-				</div>
-			</div>
-		<form>
-			<div id= login-container>
+					<button type="submit" id=createAccountBtn >Create Account</button><div id=signupAppendToBtn> </div>
+			</form>
+		</div>
+		<div id= login-container>
+			<form id=loginForm onsubmit='return allowUserLogin(event.preventDefault())' method="POST"  th:action="@{/user/home}">
 				<h1>Login</h1>
-				Username: <input id= login-username type="text" th:field="|${user.username}|"/><br/>
-				Password: <input id= login-password type="password" th:field="|${user.password}|"/><br/>
-				<button id=login-btn >Login</button>
-			</div><br/>
-		</form>
+				Username: <input class=loginInput id= loginUsername type="text" th:field="|${user.username}|"/><br/>
+				Password: <input class=loginInput id= loginPassword type="password" th:field="|${user.password}|"/><br/>
+				<button type="submit"  id=loginBtn >Login</button><div id=loginAppendToBtn> </div>
+			</form>
+		</div><br/>
 	</body>
 	<script type="text/javascript" src="/js/signIn.js">
 	</script>

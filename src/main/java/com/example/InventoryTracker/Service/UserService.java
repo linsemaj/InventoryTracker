@@ -20,7 +20,6 @@ public class UserService {
 	}
 
 	public User verifyUser(User user) {
-		// TODO Auto-generated method stub
 		 Set<User> foundUser=userRepo.findUserWithUsernameAndPassword(user.getUsername(),user.getPassword());
 		 if(foundUser.iterator().hasNext()) {
 			 user = foundUser.iterator().next(); 
@@ -34,17 +33,25 @@ public class UserService {
 		return userRepo.save(user);
 	}
 
-	public Boolean checkEmail(String email) {
-		List<User> usersWithEmail = userRepo.checkEmail(email);
-		return usersWithEmail.isEmpty();
+	public User checkEmail(User user) {
+		List<User> userWithEmail = userRepo.findEmail(user.getEmail());
+		if(!userWithEmail.isEmpty()) return userWithEmail.get(0);
+		return null;
+	}
+
+	public User checkUsername(User user) {
+		List<User> usersWithUsername = userRepo.findUsername(user.getUsername());
+		if(!usersWithUsername.isEmpty()) return usersWithUsername.get(0);
+		return null;
 		
 	}
 
-	public Boolean checkUsername(String username) {
-		List<User> usersWithUsername = userRepo.checkUsername(username);
-		return usersWithUsername.isEmpty();
-		
+	public User checkLoginInputs(User user) {
+		Set<User> setFoundUser = userRepo.findUserWithUsernameAndPassword(user.getUsername(), user.getPassword());
+		if(!setFoundUser.isEmpty()) return user=setFoundUser.iterator().next();
+		return null;
 	}
+
 	
 	
 	

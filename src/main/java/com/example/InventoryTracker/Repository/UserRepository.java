@@ -16,10 +16,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Set<User> findUserWithUsernameAndPassword(String username, String password);
 	
 	@Query("select u from User u where username= :username")
-	List<User> checkUsername(String username);
+	List<User> findUsername(String username);
 
 	@Query("select u from User u where email= :email")
-	List<User> checkEmail(String email);
+	List<User> findEmail(String email);
 	
 	
 }
