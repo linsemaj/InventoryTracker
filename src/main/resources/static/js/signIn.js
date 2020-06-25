@@ -25,7 +25,7 @@ function allowUserSignup(){
 			"Content-Type": "application/json"}, body:JSON.stringify(user)})
 			.then((responseObject) => responseObject.text())
 			.then((data)=>{
-				if(data!== ""){
+				if(data=== "Signed up"){
 					signupForm.submit()
 					return true
 				}

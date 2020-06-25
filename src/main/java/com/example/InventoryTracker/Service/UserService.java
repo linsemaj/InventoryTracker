@@ -1,6 +1,7 @@
 package com.example.InventoryTracker.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,12 @@ public class UserService {
 		if(!setFoundUser.isEmpty()) return user=setFoundUser.iterator().next();
 		return null;
 	}
+
+	public User findById(long userId) {
+		Optional<User> userOpt = userRepo.findById(userId);
+		return userOpt.orElse(new User());
+	}
+
 
 	
 	
