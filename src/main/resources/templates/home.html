@@ -1,27 +1,60 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://thymeleaf.org">
-	<head>
-		<title>Home</title>
-	</head>
-	<style>
-		#location, #welcome, #signup{color:blue; display:inline;
-		}
-	</style>
-	<body>
-		<div id=header>
-				<h3 id=location th:href>Home</h3>
-				<a id=signup th:href="@{/user/signIn}">Sign up/Login</a>
-				<h3 id=welcome th:text="|Welcome, User|"></h3>
+<head>
+<title>Home</title>
+</head>
+<style>
+#location, #welcome, #signup {
+	color: blue;
+	display: inline;
+}
+table {
+  width:80%;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.storeList button{
+	width: 100%;
+	cursor: pointer;;
+}
+</style>
+<body>
+	<div id=header>
+		<div>
+			<h3 id=location>Home</h3>
+			<input id=userId type="hidden" th:field="${user.id}"/>
+			<input id=storeCounter type="hidden" th:value="${#lists.size(stores)}"/>
 		</div>
-		
-		<div id=box-with-low-items>
-			<h2>low items text box</h2>
+		<div>
+			<a id=signout th:href="@{/user/signIn}">Return to Login</a>
+			<h3 id=welcome th:text="|Welcome, ${user.username}|"></h3>
 		</div>
+	</div>
 
-		<div id=store-section>
-			<a th:href="@{/user/store}">if storedstores > 0, show stores</a><br/>
-			<a th:href="@{/}">+Add a new Store!</a>
-		</div>
-			<a th:href="@{/}">logout</a>
-	</body>
+	<div id=box-with-low-items>
+		<textarea readonly rows="12" cols="150">Announcements for low quantity:</textarea>
+	</div>
+	<table id=addOnDiv>
+		<tr>
+			<th>No.</th>
+			<th>Store Name</th>
+			<th>Status</th>
+		</tr>
+		<tr class=storeList th:each="store : ${stores}">
+			<th class=tableNum></th>
+			<th>
+				<a th:href="@{/user/{userId}/store/{storeId}/items(userId=${user.id},storeId=${store.storeId})}">
+				<button th:text="|${store.storeName}|"></button></a>
+			</th>
+			<th></th>
+		</tr>
+	</table>
+	<div>
+		<button onclick="newStore()" id=addStoreBtn>+Add a new Store!</button>
+	</div>
+</body>
+<script type="text/javascript" src="/js/home.js">
+</script>
 </html>

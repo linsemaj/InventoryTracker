@@ -17,7 +17,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String username;
-	private String Password;
+	private String password;
 	private String email;
 	@OneToMany(mappedBy="user",cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
 	private List<Store> stores;
@@ -39,11 +39,11 @@ public class User {
 	}
 
 	public String getPassword() {
-		return Password;
+		return password;
 	}
 
 	public void setPassword(String password) {
-		Password = password;
+		this.password = password;
 	}
 
 	public String getEmail() {
@@ -85,6 +85,16 @@ public class User {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", Password=" + password + ", email=" + email + ", stores="
+				+ stores + "]";
+	}
+
+	public void addStore(Store store) {
+		stores.add(store);
 	}
 
 }
