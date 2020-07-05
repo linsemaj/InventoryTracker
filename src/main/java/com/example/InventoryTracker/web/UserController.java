@@ -1,5 +1,6 @@
 package com.example.InventoryTracker.web;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.InventoryTracker.Domain.InventoryItem;
 import com.example.InventoryTracker.Domain.Store;
 import com.example.InventoryTracker.Domain.User;
+import com.example.InventoryTracker.Service.InventoryItemService;
 import com.example.InventoryTracker.Service.StoreService;
 import com.example.InventoryTracker.Service.UserService;
 
@@ -23,8 +26,8 @@ public class UserController {
 	UserService userService;
 	@Autowired
 	StoreService storeService;
-//	@Autowired
-//	InventoryItemRepository itemRepo;
+	@Autowired
+	InventoryItemService itemService;
 	
 	@GetMapping("/")
 	public String start(){
@@ -65,24 +68,42 @@ public class UserController {
 		Set<Store> userStores = storeService.findByUserId(userId);
 		model.put("user", user);
 		model.put("stores", userStores);
-		model.put("count", userStores.size());
-//		if(userStores.isEmpty()) {
-//			model.put("count", 0);
-//		}else {
-//			model.put("count", userStores.size());			
-//		}
 		return "home";
 	}
 	@ResponseBody
 	@PostMapping("/user/{userId}/addStore")
-	public String store(@RequestBody String storeName, @PathVariable long userId){
-		User user = userService.findById(userId);
+	public Long store(@RequestBody String storeName, @PathVariable long userId){
 		Store store = new Store();
-		store.setUser(user);
+		User user = userService.findById(userId);
 		store.setStoreName(storeName);
 		user.addStore(store);
-		userService.save(user);
+		store.setUser(user);
 		storeService.save(store);
+		return store.getStoreId();
+	}
+	@GetMapping("/user/{userId}/store/{storeId}/items")
+	public String userStore(@PathVariable long userId,@PathVariable long storeId, ModelMap model){
+		User user = userService.findById(userId);
+		Store store = storeService.findById(storeId);
+		List<InventoryItem> items = store.getItems();
+		model.put("items", items);
+		model.put("user", user);
+		model.put("store", store);
 		return "store";
-	}	
+	}
+	@PostMapping("/user/{userId}/store/{storeId}/items")
+	public String itemUpdate(@PathVariable long userId,@PathVariable long storeId, InventoryItem item){
+		Store store = storeService.findById(storeId);
+		item.setStore(store);
+		store.addItem(item);
+		itemService.save(item);
+		storeService.save(store);
+		return "redirect:/user/"+userId+"/store/"+storeId+"/items";
+	}
+	@PostMapping("/user/{userId}/store/{storeId}/items/{itemId}/delete")
+	public String deleteItem(@PathVariable long userId,@PathVariable long storeId,@PathVariable long itemId, @RequestBody Long sentItemId){
+		InventoryItem item = itemService.findById(sentItemId);
+		itemService.delete(item);
+		return "redirect:/user/"+userId+"/store/"+storeId+"/items";
+	}
 }

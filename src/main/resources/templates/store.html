@@ -1,16 +1,97 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://thymeleaf.org">
-	<head>
-		<title>Store</title>
-	</head>
-	<style>
-	
-	</style>
-	<body>
-		<a th:href="@{/user/home}">Home</a>
-		<div>calender</div>
-		<div>
-		+add new item
-		</div><br/>
-	</body>
+<head>
+<title>Store</title>
+</head>
+<style>
+table {
+	width: 100%;
+	border: 3px solid black;
+	border-collapse: collapse
+}
+
+th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+.form-popup {
+	display: none;
+	border: 2px solid;
+	width: 100%;
+}
+.editForm{
+	display: none;
+	border: 2px solid;
+	width: 100%;
+}
+</style>
+<body>
+	<a th:href="@{/user/{userId}/home (userId=${user.id})}">Home</a>
+	<div>calendar</div>
+	<div>Current Items</div>
+	<input id=userId type="hidden" th:field="${user.id}" />
+	<input id=itemCounter type="hidden" th:value="${#lists.size(items)}" />
+	<input id=storeId type="hidden" th:value="${store.storeId}" />
+	<div>
+		<table id='addOnTable'>
+			<tr>
+				<th>No</th>
+				<th>Item Name</th>
+				<th>Quantity</th>
+				<th>Alert threshold</th>
+				<th>Description</th>
+				<th>Edit</th>
+			</tr>
+			<tr class=storeList th:value="${item.itemId}" th:each="item : ${items}">
+				<th class="thNo" th:id="no+${item.itemId}"></th>
+				<th class="item" th:id="name+${item.itemId}" th:text="${item.name}"></th>
+				<th class="item" th:id="quantity+${item.itemId}" th:text="${item.quantity}"></th>
+				<th class="item" th:id="low+${item.itemId}" th:text="${item.lowCount}"></th>
+				<th class="item" th:id="description+${item.itemId}" th:text="${item.description}"></th>
+				<th class="">
+				<button th:value="${item.itemId}" onclick= "editTheItem(this.value)">Edit</button></th>
+			</tr>
+		</table>
+	</div>
+	<div class="form-popup" id="newItemContainer">
+		<form action="" method="post" id="newItemForm">
+			<h1>New Item</h1>
+			<label><b>Item Name</b></label> 
+			<input type="text" placeholder="Enter Item Name" name="name" required> 
+			<label><b>Quantity</b></label> 
+			<input type="text" placeholder="Enter Quantity" onkeypress="return isNumber(event)" name="quantity" required>
+			<label><b>Alert Quantity</b></label> 
+			<input type="text" placeholder="Quantity considered low" onkeypress="return isNumber(event)" name="lowCount" required>
+			<label><b>Description</b></label> 
+			<input type="text" placeholder="(Optional)" name="description">
+			
+			<button type="submit" class="btn">Save</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+		</form>
+	</div>
+	<div class="editForm" id="editItemContainer">
+		<form action="" method="post" id="editItemForm">
+			<input type="hidden" id="editItemId">
+			<h1 class="editItem"></h1>
+			<label><b>Item Name</b></label> 
+			<input type="text" class="editItem"  name="name" required> 
+			<label><b>Quantity</b></label> 
+			<input type="text" class="editItem" onkeypress="return isNumber(event)" name="quantity" required>
+			<label><b>Alert Quantity</b></label> 
+			<input type="text" class="editItem"  onkeypress="return isNumber(event)" name="lowCount" required>
+			<label><b>Description</b></label> 
+			<input type="text" class="editItem"  name="description">
+			
+			<button type="submit">Save</button>
+			<button type="button" id="editDeleteBtn" onclick="deleteItem(this.value)">Delete</button>
+			<button type="button" onclick="closeForm()">Cancel</button>
+		</form>
+	</div>
+	<div>
+		<button onclick='openForm()' id=newItemBtn>+add new item</button>
+	</div>
+	<br />
+	<script type="text/javascript" src="/js/store.js"></script>
+</body>
 </html>

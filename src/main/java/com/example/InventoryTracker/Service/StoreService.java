@@ -21,4 +21,9 @@ public class StoreService {
 	public void save(Store store) {
 		storeRepo.save(store);
 	}
+
+	public Store findById(long storeId) {
+		return storeRepo.findById(storeId).orElse(new Store());
+	}
+
 }

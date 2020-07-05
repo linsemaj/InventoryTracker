@@ -8,13 +8,24 @@
 	color: blue;
 	display: inline;
 }
+table {
+  width:80%;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.storeList button{
+	width: 100%;
+	cursor: pointer;;
+}
 </style>
 <body>
 	<div id=header>
 		<div>
 			<h3 id=location>Home</h3>
 			<input id=userId type="hidden" th:field="${user.id}"/>
-			<input id=storeCounter type="hidden" th:field="|${#lists.size(stores)}|"/>
+			<input id=storeCounter type="hidden" th:value="${#lists.size(stores)}"/>
 		</div>
 		<div>
 			<a id=signout th:href="@{/user/signIn}">Return to Login</a>
@@ -25,11 +36,21 @@
 	<div id=box-with-low-items>
 		<textarea readonly rows="12" cols="150">Announcements for low quantity:</textarea>
 	</div>
-
-	<div id=storeList th:each="store : ${stores}"> 
-		<h3 th:text="|Store: ${store.storeName}|"></h3>
-	</div>
-	<div id=addOnDiv></div>
+	<table id=addOnDiv>
+		<tr>
+			<th>No.</th>
+			<th>Store Name</th>
+			<th>Status</th>
+		</tr>
+		<tr class=storeList th:each="store : ${stores}">
+			<th class=tableNum></th>
+			<th>
+				<a th:href="@{/user/{userId}/store/{storeId}/items(userId=${user.id},storeId=${store.storeId})}">
+				<button th:text="|${store.storeName}|"></button></a>
+			</th>
+			<th></th>
+		</tr>
+	</table>
 	<div>
 		<button onclick="newStore()" id=addStoreBtn>+Add a new Store!</button>
 	</div>

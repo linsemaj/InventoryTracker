@@ -8,16 +8,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "stores")
 public class Store {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long storeId;
-	@OneToMany
+	@OneToMany(mappedBy="store",orphanRemoval = true)
 	private List<InventoryItem> items;
 	private String storeName;
-	@ManyToOne()
+	@ManyToOne
 	private User user;
 	
 	public String getStoreName() {
@@ -43,6 +45,9 @@ public class Store {
 	}
 	public void setItems(List<InventoryItem> items) {
 		this.items = items;
+	}
+	public void addItem(InventoryItem item) {
+		this.items.add(item);
 	}
 	
 	

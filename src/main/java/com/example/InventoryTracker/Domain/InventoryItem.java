@@ -13,12 +13,20 @@ public class InventoryItem {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long itemId;
-	private Integer quantity;
 	private String name;
-	private Integer lowCount;
+	private Integer quantity;
+	private Long lowCount;
+	private String description;
 	@ManyToOne
 	private Store store;
 	
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Store getStore() {
 		return store;
 	}
@@ -43,11 +51,16 @@ public class InventoryItem {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getLowCount() {
+	public Long getLowCount() {
 		return lowCount;
 	}
-	public void setLowCount(Integer lowCount) {
+	public void setLowCount(Long lowCount) {
 		this.lowCount = lowCount;
+	}
+	@Override
+	public String toString() {
+		return "InventoryItem [itemId=" + itemId + ", name=" + name + ", quantity=" + quantity + ", lowCount="
+				+ lowCount + ", description=" + description + ", store=" + store + "]";
 	}
 
 	
