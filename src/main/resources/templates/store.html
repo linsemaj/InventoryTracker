@@ -14,7 +14,9 @@ th, td {
 	border: 1px solid black;
 	border-collapse: collapse;
 }
-
+.quantity{
+	display:inline;
+}
 .form-popup {
 	display: none;
 	border: 2px solid;
@@ -28,7 +30,7 @@ th, td {
 </style>
 <body>
 	<a th:href="@{/user/{userId}/home (userId=${user.id})}">Home</a>
-	<div>calendar</div>
+	<div>Legend: yellow= below alert, green = above alert, red= below alert/2</div>
 	<div>Current Items</div>
 	<input id=userId type="hidden" th:field="${user.id}" />
 	<input id=itemCounter type="hidden" th:value="${#lists.size(items)}" />
@@ -41,16 +43,23 @@ th, td {
 				<th>Quantity</th>
 				<th>Alert threshold</th>
 				<th>Description</th>
+				<th>Status</th>
 				<th>Edit</th>
 			</tr>
 			<tr class=storeList th:value="${item.itemId}" th:each="item : ${items}">
-				<th class="thNo" th:id="no+${item.itemId}"></th>
-				<th class="item" th:id="name+${item.itemId}" th:text="${item.name}"></th>
-				<th class="item" th:id="quantity+${item.itemId}" th:text="${item.quantity}"></th>
-				<th class="item" th:id="low+${item.itemId}" th:text="${item.lowCount}"></th>
-				<th class="item" th:id="description+${item.itemId}" th:text="${item.description}"></th>
-				<th class="">
-				<button th:value="${item.itemId}" onclick= "editTheItem(this.value)">Edit</button></th>
+				<th class="thNo" th:id="no+${item.itemId}" th:value="${item.itemId}"></th>
+				<th th:id="name+${item.itemId}" th:text="${item.name}"></th>
+				<th>
+					<button th:value="${item.itemId}" onclick="subtractQuantity(this.value)">-</button>
+					<h5 class="quantity" th:id="quantity+${item.itemId}" th:text="${item.quantity}"></h5>
+					<button th:value="${item.itemId}" onclick="addQuantity(this.value)">+</button>
+				</th>
+				<th class="low" th:id="low+${item.itemId}" th:text="${item.lowCount}"></th>
+				<th th:id="description+${item.itemId}" th:text="${item.description}"></th>
+				<th class="thColor" th:id="status+${item.itemId}">
+					<input class="colorInput" type="hidden" th:value="${item.color}">
+				</th>
+				<th><button th:value="${item.itemId}" onclick= "editTheItem(this.value)">Edit</button></th>
 			</tr>
 		</table>
 	</div>
@@ -83,7 +92,7 @@ th, td {
 			<label><b>Description</b></label> 
 			<input type="text" class="editItem"  name="description">
 			
-			<button type="submit">Save</button>
+			<button id="editSubmitBtn" type="submit">Save</button>
 			<button type="button" id="editDeleteBtn" onclick="deleteItem(this.value)">Delete</button>
 			<button type="button" onclick="closeForm()">Cancel</button>
 		</form>

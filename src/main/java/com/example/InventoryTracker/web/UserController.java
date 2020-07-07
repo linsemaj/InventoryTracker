@@ -31,7 +31,6 @@ public class UserController {
 	
 	@GetMapping("/")
 	public String start(){
-		
 		return "redirect:/user/signIn";
 	}
 	@GetMapping("/user/signIn")
@@ -74,6 +73,7 @@ public class UserController {
 	@PostMapping("/user/{userId}/addStore")
 	public Long store(@RequestBody String storeName, @PathVariable long userId){
 		Store store = new Store();
+		store.setDefaultColor();
 		User user = userService.findById(userId);
 		store.setStoreName(storeName);
 		user.addStore(store);
@@ -81,9 +81,43 @@ public class UserController {
 		storeService.save(store);
 		return store.getStoreId();
 	}
+	@ResponseBody
+	@GetMapping("/user/{userId}/home/alert")
+	public String alertUser(@PathVariable long userId){
+		String returnString ="";
+		Set<Store> alertStores = storeService.findStoreAlertsByUserId(userId);
+		for(Store store:alertStores) {
+			returnString+= "From Store: "+store.getStoreName()+ " \n";
+			List<InventoryItem> items = itemService.findItemAlertsByStoreId(store.getStoreId());
+			for(InventoryItem item:items) {
+				returnString += ""+item.getName()+": Status="+ item.getColor()+" Quantity: "+item.getQuantity()+"\n";
+			}
+			returnString += "\n";
+		}
+		return returnString;
+	}
+	@ResponseBody
+	@PostMapping("/user/{userId}/store/{storeId}/item/{itemId}/change1")
+	public void store(@PathVariable long userId,@PathVariable long storeId,@PathVariable long itemId, @RequestBody Integer one){
+		Store store =storeService.findById(storeId);
+		InventoryItem item = itemService.findById(itemId);
+		item.setQuantity(item.getQuantity()+one);
+		item.setDefaultColor();
+		store.addItem(item);
+		store.setDefaultColor();
+		storeService.save(store);
+		itemService.save(item);
+	}
+	
 	@GetMapping("/user/{userId}/store/{storeId}/items")
 	public String userStore(@PathVariable long userId,@PathVariable long storeId, ModelMap model){
 		User user = userService.findById(userId);
+		if(user.getId()==null) {
+			model.put("items", new InventoryItem());
+			model.put("user", new User());
+			model.put("store", new Store());
+			return "redirect:/user/signIn";
+		}
 		Store store = storeService.findById(storeId);
 		List<InventoryItem> items = store.getItems();
 		model.put("items", items);
@@ -93,11 +127,7 @@ public class UserController {
 	}
 	@PostMapping("/user/{userId}/store/{storeId}/items")
 	public String itemUpdate(@PathVariable long userId,@PathVariable long storeId, InventoryItem item){
-		Store store = storeService.findById(storeId);
-		item.setStore(store);
-		store.addItem(item);
-		itemService.save(item);
-		storeService.save(store);
+		saveNewOrEditedItem(storeId, item);
 		return "redirect:/user/"+userId+"/store/"+storeId+"/items";
 	}
 	@PostMapping("/user/{userId}/store/{storeId}/items/{itemId}/delete")
@@ -105,5 +135,19 @@ public class UserController {
 		InventoryItem item = itemService.findById(sentItemId);
 		itemService.delete(item);
 		return "redirect:/user/"+userId+"/store/"+storeId+"/items";
+	}
+	@PostMapping("/user/{userId}/store/{storeId}/items/{itemId}/edit")
+	public String editItem(@PathVariable long userId,@PathVariable long storeId, @PathVariable long itemId, InventoryItem item){
+		saveNewOrEditedItem(storeId, item);
+		return "redirect:/user/"+userId+"/store/"+storeId+"/items";
+	}
+	private void saveNewOrEditedItem(long storeId, InventoryItem item) {
+		Store store = storeService.findById(storeId);
+		item.setDefaultColor();
+		item.setStore(store);
+		store.addItem(item);
+		itemService.save(item);
+		store.setDefaultColor();
+		storeService.save(store);
 	}
 }

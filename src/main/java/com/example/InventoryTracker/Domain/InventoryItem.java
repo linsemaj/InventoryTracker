@@ -16,11 +16,23 @@ public class InventoryItem {
 	private String name;
 	private Integer quantity;
 	private Long lowCount;
+	private String color;
 	private String description;
 	@ManyToOne
 	private Store store;
 	
 	
+	public String getColor() {
+		return color;
+	}
+	public void setDefaultColor() {
+		if(quantity>lowCount) color="lawngreen";
+		if(quantity<=lowCount) color="yellow";
+		if(quantity<(Math.max(Math.sqrt(lowCount), lowCount/2))) color="red";
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -63,5 +75,22 @@ public class InventoryItem {
 				+ lowCount + ", description=" + description + ", store=" + store + "]";
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InventoryItem other = (InventoryItem) obj;
+		if (itemId == null) {
+			if (other.itemId != null)
+				return false;
+		} else if (!itemId.equals(other.itemId))
+			return false;
+		return true;
+	}
+	
 	
 }

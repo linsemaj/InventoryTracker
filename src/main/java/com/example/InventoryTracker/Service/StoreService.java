@@ -26,4 +26,9 @@ public class StoreService {
 		return storeRepo.findById(storeId).orElse(new Store());
 	}
 
+	public Set<Store> findStoreAlertsByUserId(long userId) {
+		// TODO Auto-generated method stub
+		return storeRepo.findStoreAlertsByUserId(userId, "red", "yellow");
+	}
+
 }

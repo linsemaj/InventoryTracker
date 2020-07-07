@@ -4,17 +4,41 @@ var userId = document.querySelector('#userId')
 var storeCounter= document.querySelector('#storeCounter')
 var initalStoreCounter = storeCounter
 var storeId
+var notification
 var tableNum= document.querySelectorAll('.tableNum')
 var i=0;
 if(userId.value===""){
 	window.location = "/";
 }
-populateTableNum()
 
-function populateTableNum(){
-	for(; i<initalStoreCounter.value; i++){
+populateTableAndText()
+
+function populateTableAndText(){
+	let textArea= document.querySelector('#box-with-low-items')
+	let thColor = document.querySelectorAll('.thColor')
+	let colorInput = document.querySelectorAll('.colorInput')
+	for(; i<initalStoreCounter.value; ++i){
 		tableNum[i].innerText= i+1
+		thColor[i].style.backgroundColor= colorInput[i].value
 	}
+	populateAlert()
+	.then(response=>{
+		textArea.innerHTML+= "\n\n"+notification		
+
+	})
+}
+async function populateAlert(){
+	await Promise.resolve (
+		fetch('/user/'+userId.value+'/home/alert',{
+			method:"Get"
+		})
+		.then((response)=>response.text())
+		.then((data)=>{
+		notification=data
+		console.log(notification)
+		return notification	
+		})
+	)
 }
 function newStore(){
 	let text = document.createTextNode('Store '+(++storeCounter.value))
@@ -25,6 +49,7 @@ function newStore(){
 		let thNoValue = document.createTextNode(++i)
 		let thName = document.createElement("th")
 		let thStatus = document.createElement("th")
+		thStatus.style.backgroundColor="lawngreen"
 		let tr = document.createElement("tr")
 		let btn = document.createElement("button")
 		thNo.appendChild(thNoValue)
@@ -40,7 +65,6 @@ function newStore(){
 		tr.appendChild(thStatus)
 	})
 }
-
 
 async function serverAddStore(text){
 	await Promise.resolve(

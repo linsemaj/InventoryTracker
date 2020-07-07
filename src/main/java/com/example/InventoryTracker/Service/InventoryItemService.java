@@ -1,5 +1,7 @@
 package com.example.InventoryTracker.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,9 @@ public class InventoryItemService {
 
 	public void delete(InventoryItem item) {
 		itemRepo.delete(item);
+	}
+
+	public List<InventoryItem> findItemAlertsByStoreId(Long storeId) {
+		return itemRepo.findItemAlertsByStoreId(storeId);
 	}
 }
