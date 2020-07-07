@@ -1,0 +1,18 @@
+body{
+	background-color: #1e90ff4f;
+	}
+#location, #welcome, #signup {
+	color: blue;
+	display: inline;
+}
+table {
+  width:80%;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.storeList button{
+	width: 100%;
+	cursor: pointer;;
+}

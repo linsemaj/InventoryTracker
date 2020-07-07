@@ -14,4 +14,8 @@ public interface StoreRepository extends JpaRepository<Store, Long>{
 	@Query("select s from Store s where user_Id= :userId")
 	Set<Store> findByUserId(long userId);
 
+	@Query("select s from Store s WHERE user_Id= :userId"
+			+ " and (s.color = :red or s.color= :green)")
+	Set<Store> findStoreAlertsByUserId(long userId,String red,String green);
+
 }

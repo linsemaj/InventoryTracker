@@ -1,25 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://thymeleaf.org">
 <head>
+<link rel="stylesheet" href="/css/home.css">
 <title>Home</title>
 </head>
-<style>
-#location, #welcome, #signup {
-	color: blue;
-	display: inline;
-}
-table {
-  width:80%;
-}
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-.storeList button{
-	width: 100%;
-	cursor: pointer;;
-}
-</style>
 <body>
 	<div id=header>
 		<div>
@@ -33,8 +17,8 @@ table, th, td {
 		</div>
 	</div>
 
-	<div id=box-with-low-items>
-		<textarea readonly rows="12" cols="150">Announcements for low quantity:</textarea>
+	<div >
+		<textarea id=box-with-low-items readonly rows="12" cols="150">Announcements for low quantity:</textarea>
 	</div>
 	<table id=addOnDiv>
 		<tr>
@@ -48,7 +32,9 @@ table, th, td {
 				<a th:href="@{/user/{userId}/store/{storeId}/items(userId=${user.id},storeId=${store.storeId})}">
 				<button th:text="|${store.storeName}|"></button></a>
 			</th>
-			<th></th>
+			<th class="thColor" th:id="status+${store.storeId}">
+				<input class="colorInput" type="hidden" th:value="${store.color}">
+			</th>
 		</tr>
 	</table>
 	<div>
