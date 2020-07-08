@@ -1,37 +1,28 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://thymeleaf.org">
 <head>
+<link rel="stylesheet" href="/css/store.css">
 <title>Store</title>
 </head>
-<style>
-table {
-	width: 100%;
-	border: 3px solid black;
-	border-collapse: collapse
-}
-
-th, td {
-	border: 1px solid black;
-	border-collapse: collapse;
-}
-.quantity{
-	display:inline;
-}
-.form-popup {
-	display: none;
-	border: 2px solid;
-	width: 100%;
-}
-.editForm{
-	display: none;
-	border: 2px solid;
-	width: 100%;
-}
-</style>
 <body>
-	<a th:href="@{/user/{userId}/home (userId=${user.id})}">Home</a>
-	<div>Legend: yellow= below alert, green = above alert, red= below alert/2</div>
-	<div>Current Items</div>
+	<div id=header>
+		<div>
+			<input id=storeName th:field="${store.storeName}"></input>
+			<button id=saveStoreNameBtn onclick="updateStoreName()">save</button>
+			<input id=userId type="hidden" th:field="${user.id}"/>
+		</div>
+		<div id=rightHand>
+			<div id=welcome th:text="|Welcome, ${user.username}|"></div>
+			<a th:href="@{/user/{userId}/home (userId=${user.id})}"><button id=returnHomeBtn>Return Home</button></a>
+			<a id=signout th:href="@{/user/signIn}"><button id=returnLoginBtn>Return to Login</button></a>
+		</div>
+	</div>
+	<div  id=legend>
+		<div>Legend: </div>
+		<div>Yellow= Below alert</div>
+		<div>Green = Above alert</div>
+		<div>Red= Below half of alert</div>
+	</div>
 	<input id=userId type="hidden" th:field="${user.id}" />
 	<input id=itemCounter type="hidden" th:value="${#lists.size(items)}" />
 	<input id=storeId type="hidden" th:value="${store.storeId}" />
@@ -55,7 +46,7 @@ th, td {
 					<button th:value="${item.itemId}" onclick="addQuantity(this.value)">+</button>
 				</th>
 				<th class="low" th:id="low+${item.itemId}" th:text="${item.lowCount}"></th>
-				<th th:id="description+${item.itemId}" th:text="${item.description}"></th>
+				<th><textarea class=textArea readonly th:id="description+${item.itemId}" th:text="${item.description}">></textarea></th>
 				<th class="thColor" th:id="status+${item.itemId}">
 					<input class="colorInput" type="hidden" th:value="${item.color}">
 				</th>

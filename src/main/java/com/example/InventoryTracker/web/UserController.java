@@ -82,12 +82,20 @@ public class UserController {
 		return store.getStoreId();
 	}
 	@ResponseBody
+	@PostMapping("/user/{userId}/store/{storeId}/changeName")
+	public Long updateStoreName(@RequestBody String storeName, @PathVariable long userId, @PathVariable long storeId){
+		Store store = storeService.findById(storeId);
+		store.setStoreName(storeName.substring(1,storeName.length()-1));
+		storeService.save(store);
+		return store.getStoreId();
+	}
+	@ResponseBody
 	@GetMapping("/user/{userId}/home/alert")
 	public String alertUser(@PathVariable long userId){
 		String returnString ="";
 		Set<Store> alertStores = storeService.findStoreAlertsByUserId(userId);
 		for(Store store:alertStores) {
-			returnString+= "From Store: "+store.getStoreName()+ " \n";
+			returnString+= store.getStoreName()+ " \n";
 			List<InventoryItem> items = itemService.findItemAlertsByStoreId(store.getStoreId());
 			for(InventoryItem item:items) {
 				returnString += ""+item.getName()+": Status="+ item.getColor()+" Quantity: "+item.getQuantity()+"\n";

@@ -7,13 +7,13 @@
 <body>
 	<div id=header>
 		<div>
-			<h3 id=location>Home</h3>
+			<h1 id=location>Home: This is your hub of stores</h1>
 			<input id=userId type="hidden" th:field="${user.id}"/>
 			<input id=storeCounter type="hidden" th:value="${#lists.size(stores)}"/>
 		</div>
-		<div>
-			<a id=signout th:href="@{/user/signIn}">Return to Login</a>
+		<div id=rightHand>
 			<h3 id=welcome th:text="|Welcome, ${user.username}|"></h3>
+			<a id=signout th:href="@{/user/signIn}"><button id=returnLoginBtn> Return to Login</button></a>
 		</div>
 	</div>
 

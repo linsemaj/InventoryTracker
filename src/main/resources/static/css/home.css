@@ -5,14 +5,55 @@ body{
 	color: blue;
 	display: inline;
 }
+div{
+	margin-top:10px;
+}
+ button:hover{background-color: #20d2d7;
+  color: white;}
+   button{
+   font-size:20px;
+	padding: 19px 90px;
+	cursor: pointer;
+	background-color: #4CAF50;
+	border: 0px;
+   }
 table {
-  width:80%;
+  width:100%;
 }
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
+  height:50px;
 }
 .storeList button{
 	width: 100%;
-	cursor: pointer;;
 }
+#header{
+	display:flex;
+	 flex-direction: row;
+}
+ #addStoreBtn:hover{
+ background-color: #ffc55a;
+}
+#addStoreBtn{
+background-color:#00BEEA;
+border-radius: 300px;	
+padding:30px 10px 30px 10px;
+
+}
+#header > div {
+  width: 100%;
+  margin: 10px;
+  }
+  #rightHand{
+  	text-align: right;
+  }
+  #rightHand > a>button{
+  padding: 5px 5px 5px 5px;
+  background-color:#e8afaf;
+  border-radius:20px;
+  }
+  #welcome, #signout{
+  margin-right:20px;
+  }
+  

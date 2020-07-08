@@ -11,6 +11,15 @@ if(userId.value===""){
 }
 thPopulate()
 
+async function updateStoreName(){
+	let storeName= document.querySelector('#storeName')
+	await fetch('/user/'+userId.value+'/store/'+storeId.value+'/changeName',{
+		method:"Post", headers:{
+			"Content-Type": "application/json"
+		}, body: JSON.stringify(storeName.value)
+	})
+	window.location.href='/user/'+userId.value+'/store/'+storeId.value+'/items'
+}
 async function subtractQuantity(itemId){
 	let itemQuantity = document.querySelector('#quantity'+itemId)
 	itemQuantity.innerHTML = itemQuantity.innerHTML-1
