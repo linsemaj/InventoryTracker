@@ -1,0 +1,53 @@
+body{
+	background-color: #1e90ff4f;
+	}
+	span{ display:inline-block; background-color
+	}
+	.flex-container {
+  display: flex;
+  flex-direction: row;
+  height:500px;
+  }
+
+	.flex-container > div {
+  background-color: whitesmoke;
+  width: 100%;
+  margin: 10px;
+  text-align: center;
+  }
+  #signupUsername{
+  margin-left: 67px;
+  } #signupPassword{
+  margin-left: 72px;
+  }
+  #email{
+  margin-left: 101px;
+  }
+  #createAccountBtn{
+  margin-top: 63px;
+  
+  }
+  #loginPassword{
+  margin-left: 4px;
+  }
+  #loginBtn{
+      margin-top: 169px;
+   }
+   button:hover{background-color: #3e8e90;}
+   button{
+   font-size:20px;
+	border-radius:25px;
+	padding: 19px 90px;
+	cursor: pointer;
+	background-color: #4CAF50;
+   } input{
+   margin-top:20px;
+   height: 25px;
+   width: 200px;
+   border-width:3px;
+   }input:focus {
+  border-color: #30DB37;
+}
+   label{
+   font-size:20px;
+   }

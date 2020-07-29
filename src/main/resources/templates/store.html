@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/store.css">
+<title>Store</title>
+</head>
+<body>
+	<div id=header>
+		<div>
+			<input id=storeName th:field="${store.storeName}"></input>
+			<button id=saveStoreNameBtn onclick="updateStoreName()">save</button>
+			<input id=userId type="hidden" th:field="${user.id}"/>
+		</div>
+		<div id=rightHand>
+			<div id=welcome th:text="|Welcome, ${user.username}|"></div>
+			<a th:href="@{/user/{userId}/home (userId=${user.id})}"><button id=returnHomeBtn>Return Home</button></a>
+			<a id=signout th:href="@{/user/signIn}"><button id=returnLoginBtn>Return to Login</button></a>
+		</div>
+	</div>
+	<div  id=legend>
+		<div>Legend: </div>
+		<div>Yellow= Below alert</div>
+		<div>Green = Above alert</div>
+		<div>Red= Below half of alert</div>
+	</div>
+	<input id=userId type="hidden" th:field="${user.id}" />
+	<input id=itemCounter type="hidden" th:value="${#lists.size(items)}" />
+	<input id=storeId type="hidden" th:value="${store.storeId}" />
+	<div>
+		<table id='addOnTable'>
+			<tr>
+				<th>No</th>
+				<th>Item Name</th>
+				<th>Quantity</th>
+				<th>Alert threshold</th>
+				<th>Description</th>
+				<th>Status</th>
+				<th>Edit</th>
+			</tr>
+			<tr class=storeList th:value="${item.itemId}" th:each="item : ${items}">
+				<th class="thNo" th:id="no+${item.itemId}" th:value="${item.itemId}"></th>
+				<th th:id="name+${item.itemId}" th:text="${item.name}"></th>
+				<th>
+					<button th:value="${item.itemId}" onclick="subtractQuantity(this.value)">-</button>
+					<h5 class="quantity" th:id="quantity+${item.itemId}" th:text="${item.quantity}"></h5>
+					<button th:value="${item.itemId}" onclick="addQuantity(this.value)">+</button>
+				</th>
+				<th class="low" th:id="low+${item.itemId}" th:text="${item.lowCount}"></th>
+				<th><textarea class=textArea readonly th:id="description+${item.itemId}" th:text="${item.description}">></textarea></th>
+				<th class="thColor" th:id="status+${item.itemId}">
+					<input class="colorInput" type="hidden" th:value="${item.color}">
+				</th>
+				<th><button th:value="${item.itemId}" onclick= "editTheItem(this.value)">Edit</button></th>
+			</tr>
+		</table>
+	</div>
+	<div class="form-popup" id="newItemContainer">
+		<form action="" method="post" id="newItemForm">
+			<h1>New Item</h1>
+			<label><b>Item Name</b></label> 
+			<input type="text" placeholder="Enter Item Name" name="name" required> 
+			<label><b>Quantity</b></label> 
+			<input type="text" placeholder="Enter Quantity" onkeypress="return isNumber(event)" name="quantity" required>
+			<label><b>Alert Quantity</b></label> 
+			<input type="text" placeholder="Quantity considered low" onkeypress="return isNumber(event)" name="lowCount" required>
+			<label><b>Description</b></label> 
+			<input type="text" placeholder="(Optional)" name="description">
+			
+			<button type="submit" class="btn">Save</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+		</form>
+	</div>
+	<div class="editForm" id="editItemContainer">
+		<form action="" method="post" id="editItemForm">
+			<input type="hidden" id="editItemId">
+			<h1 class="editItem"></h1>
+			<label><b>Item Name</b></label> 
+			<input type="text" class="editItem"  name="name" required> 
+			<label><b>Quantity</b></label> 
+			<input type="text" class="editItem" onkeypress="return isNumber(event)" name="quantity" required>
+			<label><b>Alert Quantity</b></label> 
+			<input type="text" class="editItem"  onkeypress="return isNumber(event)" name="lowCount" required>
+			<label><b>Description</b></label> 
+			<input type="text" class="editItem"  name="description">
+			
+			<button id="editSubmitBtn" type="submit">Save</button>
+			<button type="button" id="editDeleteBtn" onclick="deleteItem(this.value)">Delete</button>
+			<button type="button" onclick="closeForm()">Cancel</button>
+		</form>
+	</div>
+	<div>
+		<button onclick='openForm()' id=newItemBtn>+add new item</button>
+	</div>
+	<br />
+	<script type="text/javascript" src="/js/store.js"></script>
+</body>
+</html>

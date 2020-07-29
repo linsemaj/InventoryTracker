@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/home.css">
+<title>Home</title>
+</head>
+<body>
+	<div id=header>
+		<div>
+			<h1 id=location>Home: This is your hub of stores</h1>
+			<input id=userId type="hidden" th:field="${user.id}"/>
+			<input id=storeCounter type="hidden" th:value="${#lists.size(stores)}"/>
+		</div>
+		<div id=rightHand>
+			<h3 id=welcome th:text="|Welcome, ${user.username}|"></h3>
+			<a id=signout th:href="@{/user/signIn}"><button id=returnLoginBtn> Return to Login</button></a>
+		</div>
+	</div>
+
+	<div >
+		<textarea id=box-with-low-items readonly rows="12" cols="150">Announcements for low quantity:</textarea>
+	</div>
+	<table id=addOnDiv>
+		<tr>
+			<th>No.</th>
+			<th>Store Name</th>
+			<th>Status</th>
+		</tr>
+		<tr class=storeList th:each="store : ${stores}">
+			<th class=tableNum></th>
+			<th>
+				<a th:href="@{/user/{userId}/store/{storeId}/items(userId=${user.id},storeId=${store.storeId})}">
+				<button th:text="|${store.storeName}|"></button></a>
+			</th>
+			<th class="thColor" th:id="status+${store.storeId}">
+				<input class="colorInput" type="hidden" th:value="${store.color}">
+			</th>
+		</tr>
+	</table>
+	<div>
+		<button onclick="newStore()" id=addStoreBtn>+Add a new Store!</button>
+	</div>
+</body>
+<script type="text/javascript" src="/js/home.js">
+</script>
+</html>
